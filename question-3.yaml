@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-service
+spec:
+  selector:
+    app: app-python
+  ports:
+  - protocol: "TCP"
+    port: 6000
+    targetPort: 5000
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-python
+spec:
+  selector:
+    matchLabels:
+      app: app-python
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: app-python
+    spec:
+      containers:
+      - name: app-python
+        image: image-name:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
